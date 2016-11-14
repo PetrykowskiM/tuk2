@@ -1,8 +1,9 @@
 {
   "mysql": {
-    "host": "docker-mysql",
+    "host": "192.168.30.150",
     "port": "",
-    "user": "",
+    "user": "TUKGRP3",
+    "password": "fy4,vbEi",
     "database": ""
   }
 }
