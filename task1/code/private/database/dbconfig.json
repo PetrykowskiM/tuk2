@@ -1,0 +1,8 @@
+{
+  "mysql": {
+    "host": "docker-mysql",
+    "port": "",
+    "user": "",
+    "database": ""
+  }
+}
