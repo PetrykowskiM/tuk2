@@ -1,5 +1,5 @@
 'use strict'
-const config = require( __dirname + '/../dbconfig.json').mysql
+const config = require( __dirname + '/../dbconfig.json').hdb
 
 // const db  = require('mysql');
 const q   = require('q')
@@ -13,22 +13,13 @@ const q   = require('q')
 var hdb    = require('hdb');
 var client = hdb.createClient({
   host     : config.host,
-  port     : 31615,
+  port     : config.port,
   user     : config.user,
   password : config.password
 });
 
-//Tables
-let database = 'TUK'
 let tables = {
-  persons: database + '.PERSONS_S',
-}
-
-module.exports = {
-  init: setupDatabase,
-  query: query,
-  instance: client,
-  tables: tables
+  persons: config.database + '.PERSONS_S',
 }
 
 function query(sqlQuery){
@@ -74,4 +65,11 @@ function setupDatabase () {
     .catch( err => {
       console.log("Database Error: ", err)
     })
+}
+
+module.exports = {
+  init: setupDatabase,
+  query: query,
+  instance: client,
+  tables: tables
 }

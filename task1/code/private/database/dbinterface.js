@@ -1,5 +1,5 @@
 'use strict'
-const dbPath = './mysql'
+const dbPath = './hdb'
 const dep_dbPath = './compatibility'
 
 //import necessary modules
@@ -10,7 +10,10 @@ module.exports = {
   init: () => {
     return global.init()
   },
-  getTopEntries: persons.topEntries,                // @Param (limit) -> [persons]
+  getTopEntries: persons.topEntries,  // @Param (limit) -> [persons]
+  getBabies: persons.babies,
+  getBmi: persons.bmi,
+  getOldest: persons.getOldest,
+  getMostDiverseOrSimiliar: persons.diverseOrSimiliar,
+  getPyramid: persons.pyramid
 }
-
-
