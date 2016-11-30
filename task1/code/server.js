@@ -9,6 +9,7 @@ var port         = isDeveloping ? 8000 : process.env.PORT;
 var app          = express();
 var http         = require('http').Server(app);
 var router       = require('./private/router.js')(app)
+var db           = require('./private/database/dbinterface.js')
 
 if (isDeveloping) {
   var webpack              = require('webpack');
@@ -48,10 +49,13 @@ if (isDeveloping) {
   });
 }
 
-http.listen(port, '0.0.0.0', function onStart(err) {
-  if (err) {
-    console.log(err);
-  }
+db.init() 
+  .then(_ => {
+    http.listen(port, '0.0.0.0', function onStart(err) {
+      if (err) {
+        console.log(err);
+      }
 
-  console.info('==> 🌎 Listening on port %s.', port);
-});
+      console.info('==> 🌎 Listening on port %s.', port);
+    });
+  })

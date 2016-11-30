@@ -1,14 +1,7 @@
 {
   "mysql": {
     "host": "docker-mysql",
-    "port": "",
     "user": "XXX",
-    "password": "XXX",
-    "database": "billingpage"
-  },
-  "rethinkdb": {
-    "host": "rethinkdb",
-    "port": 28015,
-    "database_name": "nexboard"
+    "password": "XXX"
   }
 }
