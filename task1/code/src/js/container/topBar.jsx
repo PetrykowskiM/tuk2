@@ -15,7 +15,7 @@ const TopBar = React.createClass({
     return (
       <div className="top-bar">
         <a className="top-btn" onClick={ _ => this.props.addTimer()}>
-          Add Timer
+          TopBar (Maybe open queries from here?)
         </a>
       </div>
     )

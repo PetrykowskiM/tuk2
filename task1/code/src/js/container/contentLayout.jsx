@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import Timer from './timer'
+import Map from './map'
 
 const ContentLayout = React.createClass({
   propTypes: {
@@ -14,11 +14,7 @@ const ContentLayout = React.createClass({
   render() {
     return (
       <div className="content">
-        {this.props.timer.map( (timer, index) => (
-          <Timer 
-            key={index}
-            index={index}/>
-        ))}
+        <Map google={window.google}/>
       </div>
     )
   },
