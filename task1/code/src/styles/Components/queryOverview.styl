@@ -3,7 +3,26 @@
   top 0
   left 0
   width 100%
-  height 100%
+  height 100vh
+  z-index 10000
   background-color  color_dark_opaque
+  color white
   display inline-flex
   padding padding_medium
+  flex-wrap wrap
+
+  > div
+    width 50%
+    font-size font_huge
+    position relative
+
+    &:hover
+      cursor pointer
+      color color_primary
+
+    >.query-name
+      position absolute
+      width 100%
+      text-align center
+      top 50%
+      transform translateY(-50%)
