@@ -49,11 +49,11 @@ function getBmi(){
   return execute(query);
 }
 
-function getMostDiverseOrSimiliar(bday, height, weight, sorting, limit){
-  let query = `select * from ${global.tables.persons}` +
-              ` WHERE birth_date = TO_DATE('${bday}', 'YYYY-MM-DD')` +
-              ` ORDER BY ABS(weight-${weight}) ${sorting}, ABS(height-${height}) ${sorting}`;
-  return limitedQuery(query, limit);
+function getMostDiverseOrSimiliar(year){
+  let query = `select ROUND(height) As height, ROUND(weight) As weight, COUNT(*) As count from ${global.tables.persons}` +
+              ` WHERE YEAR(birth_date) = ${year}` +
+              ` GROUP BY ROUND(height), ROUND(weight)`;
+  return execute(query);
 }
 
 function getOldest(){
