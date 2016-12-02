@@ -13,7 +13,7 @@ module.exports = {
   getTopEntries: persons.topEntries,  // @Param (limit) -> [persons]
   getBabies: persons.babies,
   getBmi: persons.bmi,
-  getOldest: persons.getOldest,
+  getOldest: persons.oldest,
   getMostDiverseOrSimiliar: persons.diverseOrSimiliar,
   getPyramid: persons.pyramid
 }
