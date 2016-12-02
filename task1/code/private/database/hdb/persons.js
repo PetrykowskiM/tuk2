@@ -16,7 +16,7 @@ function execute(query){
   global.query(query)
     .then(result => {
       deferred.resolve(result)
-    })
+    }, console.log)
     .catch( deferred.reject )
   return deferred.promise
 }
@@ -35,17 +35,18 @@ function getTopEntries(limit) {
   return limitedQuery(query, limit);
 }
 
-function getBabies(sorting, limit){
+function getBabies(){
+  console.log("getBabies");
   let year = new Date().getFullYear() - config.definition.baby;
-  let query = `select * from ${global.tables.persons} WHERE YEAR(birth_date) >= ${year} ORDER BY height ${sorting}`
-  return limitedQuery(query, limit);
+  let query = `select SUBSTRING(zip, 0, 2) AS zip, AVG(height) AS value from ${global.tables.persons} WHERE YEAR(birth_date) >= ${year} GROUP BY SUBSTRING(zip, 0, 2)`
+  console.log(query);
+  return execute(query);
 }
 
-function getBmi(sorting, limit){
-  console.log(sorting, limit)
-  let query = `select *, weight/((height/100)*(height/100)) As BMI from ${global.tables.persons}` +
-              ` ORDER BY weight/((height/100)*(height/100)) ${sorting}`
-  return limitedQuery(query, limit);
+function getBmi(){
+  let query = `select SUBSTRING(zip, 0, 2) AS zip, AVG(weight/((height/100)*(height/100))) AS value from ${global.tables.persons}` +
+              ` GROUP BY SUBSTRING(zip, 0, 2)`
+  return execute(query);
 }
 
 function getMostDiverseOrSimiliar(bday, height, weight, sorting, limit){
@@ -55,14 +56,15 @@ function getMostDiverseOrSimiliar(bday, height, weight, sorting, limit){
   return limitedQuery(query, limit);
 }
 
-function getOldest(limit){
-  let query = `SELECT * FROM ${global.tables.persons} ORDER BY YEAR(NOW())-YEAR(birth_date) DESC`;
-  return limitedQuery(limit);
+function getOldest(){
+  let query = `SELECT SUBSTRING(zip, 0, 2) AS zip, MAX(DAYS_BETWEEN (birth_date, CURRENT_DATE)) As value FROM ${global.tables.persons} GROUP BY SUBSTRING(zip, 0, 2)`;
+  return execute(query);
 }
 function getPyramid(){
   let query = `SELECT YEAR(NOW())-YEAR(birth_date) As AGE,
              COUNT(case when gender = 'm' then 1 else null end) As m,
-             COUNT(case when gender = 'f' then 1 else null end) AS f
+             COUNT(case when gender = 'f' then 1 else null end) AS f,
+             COUNT(case when gender = 'm' then 1 else null end) - COUNT(case when gender = 'f' then 1 else null end) As diff
             FROM ${global.tables.persons}
             GROUP BY YEAR(birth_date)
             ORDER BY YEAR(birth_date) ASC`

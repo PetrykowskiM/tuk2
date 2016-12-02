@@ -18,7 +18,7 @@ module.exports = (app) => {
     app.get('/api/oldest', (req, res) => {
       let numberOfEntries = req.query.limit;
 
-        db.getOldest(numberOfEntries)
+        db.getOldest()
           .then( result => {
             res.json({
               result

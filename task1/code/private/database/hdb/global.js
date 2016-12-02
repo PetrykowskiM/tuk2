@@ -19,7 +19,7 @@ var client = hdb.createClient({
 });
 
 let tables = {
-  persons: config.database + '.PERSONS_S',
+  persons: 'tuk.PERSONS_S',
 }
 
 function query(sqlQuery){
