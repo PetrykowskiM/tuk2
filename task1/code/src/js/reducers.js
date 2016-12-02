@@ -3,6 +3,7 @@ import { combineReducers } from 'redux'
 
 import timer from './reducers/timerReducer'
 import settings from './reducers/settingsReducer'
+import queries from './reducers/queryReducer'
 
 const lastAction = (state = null, action) => action
 
@@ -10,5 +11,6 @@ export default combineReducers({
   timer,
   settings,
   lastAction,
+  queries,
   routing: routerReducer,
 })

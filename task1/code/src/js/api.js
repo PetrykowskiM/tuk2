@@ -49,3 +49,10 @@ export function postExample(userID, password) {
     },
   })
 }
+
+export const request = (resource) => {
+  switch(resource){
+    default:
+      return new Promise( (res, rej) => res() )
+  }
+}

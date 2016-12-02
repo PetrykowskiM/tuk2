@@ -3,20 +3,25 @@ import { connect } from 'react-redux'
 
 import {addTimer} from '../actions'
 
+import Queries from './queryOverview'
+
 const TopBar = React.createClass({
   propTypes: {
-    addTimer: PropTypes.func.isRequired,
   },
 
   componentWillMount() {
+    this.state = {
+      showQueries: true
+    }
   },
 
   render() {
     return (
       <div className="top-bar">
-        <a className="top-btn" onClick={ _ => this.props.addTimer()}>
-          TopBar (Maybe open queries from here?)
+        <a className="top-btn" onClick={ _ => this.props.setState( {showQueries: !this.state.showQueries } ) }>
+          Show Queries
         </a>
+        { this.state.showQueries ? <Queries></Queries> : null }
       </div>
     )
   },
@@ -26,11 +31,6 @@ const mapStateToProps = (state, _ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, _ownProps) => ({
-  addTimer: () => {
-    dispatch(addTimer({
-      count: 0
-    }))
-  },
 })
 
 export default connect(
