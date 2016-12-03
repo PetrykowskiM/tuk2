@@ -35,4 +35,14 @@ module.exports = (app) => {
           })
           .catch( () => {res.stats(500).send() });
     });
+
+    app.get('/api/density', (req, res) => {
+        db.getDensity()
+          .then( result => {
+            res.json({
+              result
+            })
+          })
+          .catch( () => {res.stats(500).send() });
+    });
 }

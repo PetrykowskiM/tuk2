@@ -1,8 +1,7 @@
-<<<<<<< HEAD
-/**/**/node_modules
-=======
+.DS_Store
 /**/**/node_modules
 /**/**/dbconfig.json
 *.lock
 *.log
->>>>>>> 5cad19f3a6471329d2674d50f2d88a6ee4665659
+/**/**/src/assets/plz.json
+plz2.json

@@ -15,5 +15,6 @@ module.exports = {
   getBmi: persons.bmi,
   getOldest: persons.oldest,
   getMostDiverseOrSimiliar: persons.diverseOrSimiliar,
-  getPyramid: persons.pyramid
+  getPyramid: persons.pyramid,
+  getDensity: persons.density
 }
