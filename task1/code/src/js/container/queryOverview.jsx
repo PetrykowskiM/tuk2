@@ -10,11 +10,16 @@ const QueryOverview = React.createClass({
   componentWillMount() {
   },
 
+  selectQuery(resource) {
+    console.log("on click triggered", resource)
+    this.props.select(resource)
+  },
+
   render() {
     return (
       <div className="query-overview">
         { this.props.queries.map( (query) => (
-          <div onClick={ this.props.select } key={query.name}>
+          <div onClick={ () => this.selectQuery(query.endpoint) } key={query.name}>
             <div className="query-name">{query.name}</div>
           </div>
         ))}
@@ -24,7 +29,7 @@ const QueryOverview = React.createClass({
 })
 
 const mapStateToProps = (state, _ownProps) => ({
-  queries: state.queries
+  queries: state.queries.queries
 })
 
 const mapDispatchToProps = (dispatch, _ownProps) => ({

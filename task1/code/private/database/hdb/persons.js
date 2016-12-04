@@ -12,6 +12,9 @@ module.exports = {
   pyramid: getPyramid,
   density: getDensity
 }
+
+const zipDivider = 100
+
 function execute(query){
   const deferred = q.defer();
   global.query(query)
@@ -39,21 +42,21 @@ function getTopEntries(limit) {
 function getBabies(){
   console.log("getBabies");
   let year = new Date().getFullYear() - config.definition.baby;
-  let query = `select TO_INTEGER(zip/1000) AS zip, AVG(height) AS value from ${global.tables.persons} WHERE YEAR(birth_date) >= ${year} GROUP BY TO_INTEGER(zip/1000)`
+  let query = `select TO_INTEGER(zip/${zipDivider}) AS zip, AVG(height) AS value from ${global.tables.persons} WHERE YEAR(birth_date) >= ${year} GROUP BY TO_INTEGER(zip/${zipDivider})`
   console.log(query);
   return execute(query);
 }
 
 function getBmi(){
-  let query = `select TO_INTEGER(zip/1000) AS zip, AVG(weight/((height/100)*(height/100))) AS value from ${global.tables.persons}` +
-              ` GROUP BY TO_INTEGER(zip/1000)`
+  let query = `select TO_INTEGER(zip/${zipDivider}) AS zip, AVG(weight/((height/100)*(height/100))) AS value from ${global.tables.persons}` +
+              ` GROUP BY TO_INTEGER(zip/${zipDivider})`
   return execute(query);
 }
 
 function getDensity(){
-  let query = `select TO_INTEGER(p.zip/1000) AS zip, COUNT(*)/z.size AS value from ${global.tables.persons} AS p` +
-              ` JOIN tukgrp3.zipsize AS z ON TO_INTEGER(p.zip/1000) = z.zip ` +
-              ` GROUP BY TO_INTEGER(p.zip/1000), z.size`
+  let query = `select TO_INTEGER(p.zip/${zipDivider}) AS zip, COUNT(*)/z.size AS value from ${global.tables.persons} AS p` +
+              ` JOIN tukgrp3.zipsize AS z ON TO_INTEGER(p.zip/${zipDivider}) = z.zip ` +
+              ` GROUP BY TO_INTEGER(p.zip/${zipDivider}), z.size`
   return execute(query);
 }
 
@@ -65,7 +68,7 @@ function getMostDiverseOrSimiliar(year){
 }
 
 function getOldest(){
-  let query = `SELECT TO_INTEGER(zip/1000) AS zip, MAX(DAYS_BETWEEN (birth_date, CURRENT_DATE)) As value FROM ${global.tables.persons} GROUP BY TO_INTEGER(zip/1000)`;
+  let query = `SELECT TO_INTEGER(zip/${zipDivider}) AS zip, MAX(DAYS_BETWEEN (birth_date, CURRENT_DATE)) As value FROM ${global.tables.persons} GROUP BY TO_INTEGER(zip/${zipDivider})`;
   return execute(query);
 }
 function getPyramid(){

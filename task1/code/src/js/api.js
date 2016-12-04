@@ -1,8 +1,6 @@
 import fetch from 'isomorphic-fetch'
 
-const API_URL = process.env.NODE_ENV === 'production'
-  ? 'https://template.com/api'
-  : 'http://localhost:3000/api'
+const API_URL = 'http://localhost:8000/api'
 
 // Similar to:
 // http://stackoverflow.com/questions/29473426/fetch-reject-promise-with-json-error-object
@@ -26,8 +24,10 @@ function fetchJson(url, request) {
 
   return fetch(url, finalRequest).then(
     (response) => {
-      if (response.status >= 200 && response.status < 300) {
-        return response.json()
+      console.log("responding with ", response)
+      if (response.status >= 200 && response.status < 305) {
+        console.log("success")
+        return response.json().then(Promise.resolve.bind(Promise))
       }
       // Reject other status
       return response.json().then(Promise.reject.bind(Promise))
@@ -50,9 +50,34 @@ export function postExample(userID, password) {
   })
 }
 
+export function getBabies() {
+  return fetchJson(`${API_URL}/babies`)
+}
+
+export function getBmi() {
+  return fetchJson(`${API_URL}/bmi`)
+}
+export function getDensity() {
+  return fetchJson(`${API_URL}/density`)
+}
+export function getOldest() {
+  return fetchJson(`${API_URL}/oldest`)
+}
+
+
+
 export const request = (resource) => {
   switch(resource){
+    case 'BABIES':
+      return getBabies()
+    case 'BMI':
+      return getBmi()
+    case 'DENSITY':
+      return getDensity()
+    case 'OLDEST':
+      return getOldest()
     default:
       return new Promise( (res, rej) => res() )
   }
 }
+

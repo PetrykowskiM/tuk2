@@ -1,3 +1,4 @@
+import {combineReducers} from 'redux'
 
 let queryDefinition = [
   {
@@ -6,19 +7,19 @@ let queryDefinition = [
   },
   {
     name: 'Population Density',
-    endpoint: ''
+    endpoint: 'DENSITY'
   },
   {
     name: 'Persons BMI',
-    endpoint: ''
+    endpoint: 'BMI'
   },
   {
     name: 'Persons Age',
-    endpoint: ''
+    endpoint: 'OLDEST'
   },
   {
     name: 'Baby Size',
-    endpoint: ''
+    endpoint: 'BABIES'
   }
 ]
 
@@ -26,4 +27,18 @@ const queries = (state = queryDefinition, action) => {
   return state
 }
 
-export default queries
+const show = (state = false, action) => {
+  switch(action.type){
+    case 'SHOW_QUERIES':
+      return true
+    case 'HIDE_QUERIES':
+      return false
+    default:
+      return state
+  }
+
+}
+export default combineReducers({
+  queries,
+  show
+})

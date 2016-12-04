@@ -10,7 +10,7 @@ module.exports = (app) => {
           .then( result => {
             res.json({
               result
-            })
+            }).send(200)
           })
           .catch( () => {res.stats(500).send() });
     });
