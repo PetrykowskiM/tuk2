@@ -3,23 +3,34 @@ import {combineReducers} from 'redux'
 let queryDefinition = [
   {
     name: 'Population Pyramid',
-    endpoint: 'PYRAMID'
+    endpoint: 'PYRAMID',
+    page: 'PYRAMID'
   },
   {
     name: 'Population Density',
-    endpoint: 'DENSITY'
+    endpoint: 'DENSITY',
+    page: 'MAP'
   },
   {
     name: 'Persons BMI',
-    endpoint: 'BMI'
+    endpoint: 'BMI',
+    page: 'MAP'
   },
   {
     name: 'Persons Age',
-    endpoint: 'OLDEST'
+    endpoint: 'OLDEST',
+    page: 'MAP'
   },
   {
     name: 'Baby Size',
-    endpoint: 'BABIES'
+    endpoint: 'BABIES',
+    page: 'MAP'
+  },
+  {
+    name: 'Diversity',
+    endpoint: 'DIVERSITY',
+    page: 'DIVERSITY',
+    default: 1991
   }
 ]
 
@@ -38,7 +49,22 @@ const show = (state = false, action) => {
   }
 
 }
+
+const page = (state = 'MAP', action) => {
+  switch(action.type){
+    case 'SHOW_MAP':
+       return 'MAP';
+   case 'SHOW_DIVERSITY':
+      return 'DIVERSITY';
+    case 'SHOW_PYRAMID':
+        return 'PYRAMID';
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
   queries,
+  page,
   show
 })

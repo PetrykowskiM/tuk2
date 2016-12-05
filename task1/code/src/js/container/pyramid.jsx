@@ -2,34 +2,6 @@ import React, { PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 
-const apiKey = 'AIzaSyBf52VrfeXt9RozJJt06QViJAfYEK-0W7o'
-
-// let geojson = require('json-loader!../../assets/plz3.geojson')
-
-var styleArray = [
-    {
-      featureType: 'all',
-      stylers: [
-        { saturation: -80 }
-      ]
-    },{
-      featureType: 'road.arterial',
-      elementType: 'geometry',
-      stylers: [
-        { hue: '#00ffee' },
-        { saturation: 50 }
-      ]
-    },{
-      featureType: 'poi.business',
-      elementType: 'labels',
-      stylers: [
-        { visibility: 'off' }
-      ]
-    }
-  ];
-
-const areaDict = {}
-let map = null
 let male = [];
 let female = [];
 let cats = [];

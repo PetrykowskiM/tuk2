@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
-
 const apiKey = 'AIzaSyBf52VrfeXt9RozJJt06QViJAfYEK-0W7o'
 
 // let geojson = require('json-loader!../../assets/plz3.geojson')
@@ -30,6 +29,7 @@ var styleArray = [
 
 const areaDict = {}
 let map = null
+let infoText = ""
 
 const ContentLayout = React.createClass({
   propTypes: {
@@ -64,6 +64,23 @@ const ContentLayout = React.createClass({
     return 0
   },
 
+  attachPolygonInfoWindow(polygon, html)
+{
+	polygon.infoWindow = new google.maps.InfoWindow({
+		content: html,
+	});
+	this.maps.event.addListener(polygon, 'mouseover', function(e) {
+		var latLng = e.latLng;
+		this.setOptions({fillOpacity:0.1});
+		polygon.infoWindow.setPosition(latLng);
+		polygon.infoWindow.open(map);
+	});
+this.maps.event.addListener(polygon, 'mouseout', function() {
+		this.setOptions({fillOpacity:0.35});
+		polygon.infoWindow.close();
+	});
+},
+
   componentDidMount() {
       const {google} = this.props;
       const maps = google.maps;
@@ -72,7 +89,7 @@ const ContentLayout = React.createClass({
       const mapRef = this.map;
       const node = ReactDOM.findDOMNode(mapRef);
 
-      let zoom = 6;
+      let zoom = 7;
       let lat = 51.426111;
       let lng = 10.288578
       const center = new maps.LatLng(lat, lng);
@@ -100,12 +117,21 @@ const ContentLayout = React.createClass({
         return /** @type {google.maps.Data.StyleOptions} */({
           fillColor: color,
           strokeColor: color,
-          strokeWeight: 2
+          strokeWeight: 0
         });
       });
 
       this.map.data.addListener('mouseover', (event) => {
         // this.map.data.overrideStyle(event.feature, {strokeWeight: 8});
+        console.log(event.feature.f.plz)
+        infoText = event.feature.f.plz;
+        const element = (
+            <center>{event.feature.f.plz}</center>
+          );
+        ReactDOM.render(
+            element,
+            document.getElementById('infobar')
+          );
       });
 
       this.map.data.addListener('click', function(event) {
@@ -120,8 +146,11 @@ const ContentLayout = React.createClass({
 
   render() {
     return (
-      <div ref={(map) => this.map = map}>
-        Loading map...
+      <div>
+        <div id="infobar" className="infobar">{infoText}</div>
+          <div ref={(map) => this.map = map}>
+            Loading map...
+          </div>
       </div>
     )
   },
