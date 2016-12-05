@@ -13,7 +13,7 @@ module.exports = {
   density: getDensity
 }
 
-const zipDivider = 100
+const zipDivider = 1000
 
 function execute(query){
   const deferred = q.defer();

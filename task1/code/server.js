@@ -11,6 +11,8 @@ var http         = require('http').Server(app);
 var router       = require('./private/router.js')(app)
 var db           = require('./private/database/dbinterface.js')
 
+app.use('/static', express.static('src/assets'));
+
 if (isDeveloping) {
   var webpack              = require('webpack');
   var webpackMiddleware    = require('webpack-dev-middleware');

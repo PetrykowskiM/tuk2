@@ -28,6 +28,9 @@ var styleArray = [
     }
   ];
 
+const areaDict = {}
+let map = null
+
 const ContentLayout = React.createClass({
   propTypes: {
     timer: PropTypes.array,
@@ -39,11 +42,21 @@ const ContentLayout = React.createClass({
   //   const {google} = this.props;
   //   const maps = google.maps;
   //   google.maps.event.trigger(this.map, 'resize');
+  console.log("component received props")
+    Object.keys(areaDict).forEach( (plz) => {
+      // areaDict[plz].setProperty('isColorful', true);
+      var color = this.heatMapColorforValue(this.getValue(plz))
+      map.data.overrideStyle(areaDict[plz], {strokeColor: color})
+    })
   },
 
   getValue(plz) {
-    if( plz in this.props.data)
-      return (this.props.data[plz].VALUE-this.props.data[plz].MIN) / (this.props.data[plz].MAX-this.props.data[plz].MIN)
+    // console.log("looking for plz", plz)
+    if( plz in this.props.data){
+      let value = (this.props.data[plz].VALUE-this.props.data[plz].MIN) / (this.props.data[plz].MAX-this.props.data[plz].MIN)
+      // console.log("Value for PLZ ", plz, value)
+      return value
+    }
     return 0
   },
 
@@ -65,15 +78,18 @@ const ContentLayout = React.createClass({
         styles: styleArray
       })
       this.map = new maps.Map(node, mapConfig);
-
-      this.map.data.loadGeoJson('https://dl.dropboxusercontent.com/u/47938947/plz3.geojson');
+      map = this.map
+      this.map.data.loadGeoJson('/static/plz2.geojson');
       // this.map.data.loadGeoJson(geojson);
 
       this.map.data.setStyle( (feature) => {
         var plz = feature.getProperty('plz')
         var color = this.heatMapColorforValue(this.getValue(plz))
-      
+        areaDict[plz] = feature
         if (feature.getProperty('isColorful')) {
+          color = 'gray'
+        }
+        if (feature.getProperty('rerender')) {
           color = 'gray'
         }
 
@@ -95,7 +111,7 @@ const ContentLayout = React.createClass({
 
   heatMapColorforValue(value){
     var h = (1.0 - value) * 240
-    return "hsl(" + h + ", 100%, 50%)";
+    return "hsl(" + h + ", 100%, 50%)"
   },
 
   render() {
