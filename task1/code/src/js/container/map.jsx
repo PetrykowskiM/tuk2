@@ -51,6 +51,10 @@ const ContentLayout = React.createClass({
   },
 
   getValue(plz) {
+    if (!(plz in this.props.data)){
+      // if this is the case, the plz might be '010', but we only have '10' in the dataset -> remove the 0
+      plz = plz.substr(1, 2);
+    }
     // console.log("looking for plz", plz)
     if( plz in this.props.data){
       let value = (this.props.data[plz].VALUE-this.props.data[plz].MIN) / (this.props.data[plz].MAX-this.props.data[plz].MIN)
@@ -105,7 +109,7 @@ const ContentLayout = React.createClass({
       });
 
       this.map.data.addListener('click', function(event) {
-        event.feature.setProperty('isColorful', true);
+        event.feature.setProperty('isColorful', !event.feature.getProperty('isColorful'));
       })
   },
 
@@ -134,4 +138,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(ContentLayout)
-

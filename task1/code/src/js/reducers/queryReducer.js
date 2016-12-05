@@ -3,7 +3,7 @@ import {combineReducers} from 'redux'
 let queryDefinition = [
   {
     name: 'Population Pyramid',
-    endpoint: ''
+    endpoint: 'PYRAMID'
   },
   {
     name: 'Population Density',

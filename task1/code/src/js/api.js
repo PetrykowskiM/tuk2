@@ -64,6 +64,10 @@ export function getOldest() {
   return fetchJson(`${API_URL}/oldest`)
 }
 
+export function getPyramid(){
+  return fetchJson(`${API_URL}/pyramid`)
+}
+
 
 
 export const request = (resource) => {
@@ -76,8 +80,9 @@ export const request = (resource) => {
       return getDensity()
     case 'OLDEST':
       return getOldest()
+    case 'PYRAMID':
+      return getPyramid()
     default:
       return new Promise( (res, rej) => res() )
   }
 }
-

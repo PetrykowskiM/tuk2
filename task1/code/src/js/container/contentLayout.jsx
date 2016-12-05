@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import Map from './map'
+//import Map from './map'
+import Pyramid from './pyramid'
 
 const ContentLayout = React.createClass({
   propTypes: {
@@ -10,11 +11,12 @@ const ContentLayout = React.createClass({
 
   componentWillMount() {
   },
-
+//<Map google={window.google} />
   render() {
     return (
       <div className="content">
-        <Map google={window.google}/>
+        <Pyramid />
+
       </div>
     )
   },
@@ -31,4 +33,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(ContentLayout)
-

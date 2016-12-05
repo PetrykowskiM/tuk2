@@ -14,6 +14,7 @@ module.exports = {
 }
 
 const zipDivider = 1000
+const zipsizeDivider = zipDivider / 100
 
 function execute(query){
   const deferred = q.defer();
@@ -54,9 +55,12 @@ function getBmi(){
 }
 
 function getDensity(){
-  let query = `select TO_INTEGER(p.zip/${zipDivider}) AS zip, COUNT(*)/z.size AS value from ${global.tables.persons} AS p` +
-              ` JOIN tukgrp3.zipsize AS z ON TO_INTEGER(p.zip/${zipDivider}) = z.zip ` +
+  let query = `select TO_INTEGER(p.zip/${zipDivider}) AS zip, COUNT(*)/z.size AS value from ${global.tables.persons} AS p ` +
+              `JOIN ( SELECT TO_INTEGER(zip/${zipsizeDivider}) AS zip, SUM(size) AS size FROM tukgrp3.zipsize GROUP BY TO_INTEGER(zip/10) ) AS z `  +
+              `ON TO_INTEGER(p.zip/${zipDivider}) = z.zip ` +
+            //  ` JOIN tukgrp3.zipsize AS z ON TO_INTEGER(p.zip/${zipDivider}) = TO_INTEGER(z.zip/${zipsizeDivider}) ` +
               ` GROUP BY TO_INTEGER(p.zip/${zipDivider}), z.size`
+              console.log(query)
   return execute(query);
 }
 
@@ -78,6 +82,6 @@ function getPyramid(){
              COUNT(case when gender = 'm' then 1 else null end) - COUNT(case when gender = 'f' then 1 else null end) As diff
             FROM ${global.tables.persons}
             GROUP BY YEAR(birth_date)
-            ORDER BY YEAR(birth_date) ASC`
+            ORDER BY YEAR(birth_date) DESC`
   return execute(query);
 }
