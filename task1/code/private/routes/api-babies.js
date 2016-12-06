@@ -8,6 +8,7 @@ module.exports = (app) => {
 
         db.getBabies()
           .then( result => {
+            result = result.map( (e) => (Object.assign({UNIT: 'cm'}, e)) )
             res.json({
               result
             }).send(200)

@@ -9,6 +9,7 @@ module.exports = (app) => {
 
       db.getBmi()
         .then( result => {
+          result = result.map( (e) => (Object.assign({UNIT: 'kg/m^2'}, e)) )
           res.json({
             result
           })

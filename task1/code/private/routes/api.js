@@ -17,9 +17,9 @@ module.exports = (app) => {
 
     app.get('/api/oldest', (req, res) => {
       let numberOfEntries = req.query.limit;
-
         db.getOldest()
           .then( result => {
+            result = result.map( (e) => (Object.assign({UNIT: 'age in days'}, e)) )
             res.json({
               result
             })
@@ -39,6 +39,7 @@ module.exports = (app) => {
     app.get('/api/density', (req, res) => {
         db.getDensity()
           .then( result => {
+            result = result.map( (e) => (Object.assign({UNIT: '2^x people per sq-km'}, e)) )
             res.json({
               result
             })

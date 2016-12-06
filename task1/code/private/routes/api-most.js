@@ -12,6 +12,7 @@ module.exports = (app) => {
 
     app.get('/api/diverse/:year', (req, res) => {
         db.getMostDiverseOrSimiliar(req.params.year)
+          result = result.map( (e) => (Object.assign({UNIT: 'diversity count'}, e)) )
           .then( result => {
             res.json({
               result

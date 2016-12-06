@@ -24,6 +24,25 @@ var styleArray = [
       stylers: [
         { visibility: 'off' }
       ]
+    },
+    {
+      featureType: "poi",
+      elementType: "labels",
+      stylers: [
+        { visibility: "off" }
+      ]
+    },{
+      featureType: "water",
+      elementType: "labels",
+      stylers: [
+        { visibility: "off" }
+      ]
+    },{
+      featureType: "road",
+      elementType: "all",
+      stylers: [
+        { visibility: "off" }
+      ]
     }
   ];
 
@@ -89,7 +108,7 @@ this.maps.event.addListener(polygon, 'mouseout', function() {
       const mapRef = this.map;
       const node = ReactDOM.findDOMNode(mapRef);
 
-      let zoom = 6;
+      let zoom = 7;
       let lat = 51.426111;
       let lng = 10.288578
       const center = new maps.LatLng(lat, lng);
@@ -122,7 +141,7 @@ this.maps.event.addListener(polygon, 'mouseout', function() {
       });
 
       this.map.data.addListener('mouseover', (event) => {
-        console.log(event.feature.f.plz)
+        // console.log(event.feature.f.plz)
         infoText = event.feature.f.plz;
         const element = (
             <center>{event.feature.f.plz}</center>
@@ -137,7 +156,7 @@ this.maps.event.addListener(polygon, 'mouseout', function() {
       this.map.data.addListener('click', (event) => {
         infowindow.close()
         infowindow.setPosition(event.latLng)
-        infowindow.setContent( 'Value: ' + this.props.data[parseInt(event.feature.getProperty('plz'),10)].VALUE )
+        infowindow.setContent( 'Value: ' + this.props.data[parseInt(event.feature.getProperty('plz'),10)].VALUE + ' ' + this.props.data[parseInt(event.feature.getProperty('plz'),10)].UNIT )
         // console.log(event.latLng)
         infowindow.open(map)
       })
