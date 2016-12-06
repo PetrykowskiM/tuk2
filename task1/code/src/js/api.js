@@ -64,6 +64,14 @@ export function getOldest() {
   return fetchJson(`${API_URL}/oldest`)
 }
 
+export function getPyramid(){
+  return fetchJson(`${API_URL}/pyramid`)
+}
+
+export function getDiversity(year){
+  return fetchJson(`${API_URL}/diverse/`+year)
+}
+
 
 
 export const request = (resource) => {
@@ -76,8 +84,15 @@ export const request = (resource) => {
       return getDensity()
     case 'OLDEST':
       return getOldest()
+    case 'PYRAMID':
+      return getPyramid()
+      case 'DIVERSITY':
+        return getDiversity()
     default:
       return new Promise( (res, rej) => res() )
   }
 }
 
+export const requestDiversity = (year) => {
+  return getDiversity(year)
+}

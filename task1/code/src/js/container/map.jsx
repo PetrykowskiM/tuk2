@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
-
 const apiKey = 'AIzaSyBf52VrfeXt9RozJJt06QViJAfYEK-0W7o'
 
 // let geojson = require('json-loader!../../assets/plz3.geojson')
@@ -30,6 +29,7 @@ var styleArray = [
 
 const areaDict = {}
 let map = null
+let infoText = ""
 
 const ContentLayout = React.createClass({
   propTypes: {
@@ -51,6 +51,10 @@ const ContentLayout = React.createClass({
   },
 
   getValue(plz) {
+    if (!(plz in this.props.data)){
+      // if this is the case, the plz might be '010', but we only have '10' in the dataset -> remove the 0
+      plz = plz.substr(1, 2);
+    }
     // console.log("looking for plz", plz)
     if( plz in this.props.data){
       let value = (this.props.data[plz].VALUE-this.props.data[plz].MIN) / (this.props.data[plz].MAX-this.props.data[plz].MIN)
@@ -59,7 +63,24 @@ const ContentLayout = React.createClass({
     }
     return 0
   },
-	
+
+  attachPolygonInfoWindow(polygon, html)
+{
+	polygon.infoWindow = new google.maps.InfoWindow({
+		content: html,
+	});
+	this.maps.event.addListener(polygon, 'mouseover', function(e) {
+		var latLng = e.latLng;
+		this.setOptions({fillOpacity:0.1});
+		polygon.infoWindow.setPosition(latLng);
+		polygon.infoWindow.open(map);
+	});
+this.maps.event.addListener(polygon, 'mouseout', function() {
+		this.setOptions({fillOpacity:0.35});
+		polygon.infoWindow.close();
+	});
+},
+
   componentDidMount() {
       const {google} = this.props;
       const maps = google.maps;
@@ -96,24 +117,27 @@ const ContentLayout = React.createClass({
         return /** @type {google.maps.Data.StyleOptions} */({
           fillColor: color,
           strokeColor: color,
-          strokeWeight: 2
+          strokeWeight: 0
         });
       });
 
       this.map.data.addListener('mouseover', (event) => {
-        // this.map.data.overrideStyle(event.feature, {strokeWeight: 8});
-        
-
+        console.log(event.feature.f.plz)
+        infoText = event.feature.f.plz;
+        const element = (
+            <center>{event.feature.f.plz}</center>
+          );
+        ReactDOM.render(
+            element,
+            document.getElementById('infobar')
+          );
       });
 
-      var infowindow = new google.maps.InfoWindow({
-        });
-
+      var infowindow = new google.maps.InfoWindow({});
       this.map.data.addListener('click', (event) => {
-        // event.feature.setProperty('isColorful', true);
         infowindow.close()
         infowindow.setPosition(event.latLng)
-        infowindow.setContent( 'Value: ' + this.props.data[event.feature.getProperty('plz')].VALUE )
+        infowindow.setContent( 'Value: ' + this.props.data[parseInt(event.feature.getProperty('plz'),10)].VALUE )
         // console.log(event.latLng)
         infowindow.open(map)
       })
@@ -126,8 +150,11 @@ const ContentLayout = React.createClass({
 
   render() {
     return (
-      <div ref={(map) => this.map = map}>
-        Loading map...
+      <div>
+        <div id="infobar" className="infobar">{infoText}</div>
+          <div ref={(map) => this.map = map}>
+            Loading map...
+          </div>
       </div>
     )
   },
@@ -144,4 +171,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(ContentLayout)
-

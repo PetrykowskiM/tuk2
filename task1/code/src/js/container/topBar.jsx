@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import { loadQuery, showQueries, hideQueries } from '../actions'
+import { loadQuery, showQueries, hideQueries, loadQueryDiversity, showMap, showPyramid, showDiversity } from '../actions'
 
 import Queries from './queryOverview'
 
@@ -12,6 +12,7 @@ const TopBar = React.createClass({
   componentWillMount() {
   },
 
+
   selectQuery(resource) {
     console.log("load ", resource)
     this.props.hide()
@@ -19,12 +20,12 @@ const TopBar = React.createClass({
   },
 
   toogleQuery(){
-    console.log("Toggle"); 
+    console.log("Toggle");
     this.props.show()
   },
 
   render() {
-    
+
 
     return (
       <div className="top-bar">
@@ -43,7 +44,19 @@ const mapStateToProps = (state, _ownProps) => ({
 
 const mapDispatchToProps = (dispatch, _ownProps) => ({
   load: (resource) => {
-    dispatch(loadQuery(resource))
+    if(resource == 'DIVERSITY'){
+      dispatch(loadQueryDiversity(1991))
+      dispatch(showDiversity())
+    }else{
+      dispatch(loadQuery(resource))
+      if(resource == 'PYRAMID'){
+          dispatch(showPyramid())
+      }else{
+        dispatch(showMap())
+      }
+    }
+
+
   },
   show: (resource) => {
     dispatch(showQueries())
@@ -57,4 +70,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(TopBar)
-

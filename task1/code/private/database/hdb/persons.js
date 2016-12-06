@@ -14,6 +14,7 @@ module.exports = {
 }
 
 const zipDivider = 1000
+const zipsizeDivider = zipDivider / 100
 
 function execute(query){
   const deferred = q.defer();
@@ -54,16 +55,18 @@ function getBmi(){
 }
 
 function getDensity(){
-  let query = `select TO_INTEGER(p.zip/${zipDivider}) AS zip, COUNT(*)/z.size AS value from ${global.tables.persons} AS p` +
-              ` JOIN tukgrp3.zipsize AS z ON TO_INTEGER(p.zip/${zipDivider}) = z.zip ` +
-              ` GROUP BY TO_INTEGER(p.zip/${zipDivider}), z.size`
+  let query = `SELECT p.zip, LOG(2, SUM(p.zcount/z.size)) AS value FROM ` +
+              ` ( SELECT TO_INTEGER(zip/${zipDivider}) AS zip, COUNT(*) AS zcount FROM tuk.PERSONS_S GROUP BY TO_INTEGER(zip/${zipDivider}) ) AS p `+
+              ` LEFT JOIN ( SELECT TO_INTEGER(zip/${zipsizeDivider}) AS zips, SUM(size) AS size FROM tukgrp3.zipsize GROUP BY TO_INTEGER(zip/${zipsizeDivider}) ) AS z `+
+              ` ON p.zip = z.zips GROUP BY p.zip`
+              console.log(query)
   return execute(query);
 }
 
 function getMostDiverseOrSimiliar(year){
-  let query = `select ROUND(height) As height, ROUND(weight) As weight, COUNT(*) As count from ${global.tables.persons}` +
+  let query = `select ROUND(height) As height, ROUND(weight) As weight, COUNT(*) As count, gender from ${global.tables.persons}` +
               ` WHERE YEAR(birth_date) = ${year}` +
-              ` GROUP BY ROUND(height), ROUND(weight)`;
+              ` GROUP BY ROUND(height), ROUND(weight), gender`;
   return execute(query);
 }
 
@@ -78,6 +81,6 @@ function getPyramid(){
              COUNT(case when gender = 'm' then 1 else null end) - COUNT(case when gender = 'f' then 1 else null end) As diff
             FROM ${global.tables.persons}
             GROUP BY YEAR(birth_date)
-            ORDER BY YEAR(birth_date) ASC`
+            ORDER BY YEAR(birth_date) DESC`
   return execute(query);
 }

@@ -1,13 +1,18 @@
+#infobar
+  height 40px
 .content
   display inline-flex
   width 100%
   height calc( 100vh - 25px )
-  margin-top -25px 
+  margin-top -25px
   padding-top 25px
   flex-wrap wrap
 
   > div
     width 100%
+    height calc( 100vh - 25px - 40px )
+    > div
+      height calc( 100vh - 25px - 40px )
 
   // .timer
   //   width timer_width
@@ -19,12 +24,12 @@
   //     background color_dark
   //     color color_light
   //     padding padding_medium
-    
+
   //   >.body
   //     display block
   //     text-align left
   //     padding padding_normal
-      
+
   //     >div
   //       width 100%
   //       margin-bottom margin_normal

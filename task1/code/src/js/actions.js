@@ -10,12 +10,17 @@ export const increaseTimer = (index, interval) => ({type: 'INCREASE_TIMER', payl
 export const showQueries = () => ({type: 'SHOW_QUERIES' })
 export const hideQueries = () => ({type: 'HIDE_QUERIES' })
 
+export const showMap = () => ({type: 'SHOW_MAP' })
+export const showDiversity = () => ({type: 'SHOW_DIVERSITY' })
+export const showPyramid = () => ({type: 'SHOW_PYRAMID' })
+
 export const requestStart = (resource) => ({type: 'REQUEST_START', payload: {resource}})
 export const requestSuccess = (data) => ({type: 'REQUEST_SUCCESS', payload: {data}})
 export const requestError = (error) => ({type: 'REQUEST_ERROR', payload: {error}})
 
 export const loadQuery = (resource) => ((dispatch) => {
   dispatch(requestStart(resource))
+  console.log("RES",resource);
   return api.request(resource)
     .then( r => {
       console.log(r)
@@ -24,3 +29,13 @@ export const loadQuery = (resource) => ((dispatch) => {
     .catch( e => { console.log("got to errro", e); dispatch(requestError(e)) })
 })
 
+export const loadQueryDiversity = (year) => ((dispatch) => {
+  dispatch(requestStart('DIVERSITY'))
+  console.log("RES",year);
+  return api.requestDiversity(year)
+    .then( r => {
+      console.log(r)
+      dispatch(requestSuccess(r.result))
+    })
+    .catch( e => { console.log("got to errro", e); dispatch(requestError(e)) })
+})
