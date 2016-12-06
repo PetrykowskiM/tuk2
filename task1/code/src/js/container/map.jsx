@@ -59,7 +59,7 @@ const ContentLayout = React.createClass({
     }
     return 0
   },
-
+	
   componentDidMount() {
       const {google} = this.props;
       const maps = google.maps;
@@ -102,10 +102,20 @@ const ContentLayout = React.createClass({
 
       this.map.data.addListener('mouseover', (event) => {
         // this.map.data.overrideStyle(event.feature, {strokeWeight: 8});
+        
+
       });
 
-      this.map.data.addListener('click', function(event) {
-        event.feature.setProperty('isColorful', true);
+      var infowindow = new google.maps.InfoWindow({
+        });
+
+      this.map.data.addListener('click', (event) => {
+        // event.feature.setProperty('isColorful', true);
+        infowindow.close()
+        infowindow.setPosition(event.latLng)
+        infowindow.setContent( 'Value: ' + this.props.data[event.feature.getProperty('plz')].VALUE )
+        // console.log(event.latLng)
+        infowindow.open(map)
       })
   },
 
